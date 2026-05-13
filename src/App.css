@@ -1,0 +1,133 @@
+.app-shell {
+  width: min(100%, 44rem);
+  display: grid;
+  gap: 2rem;
+}
+
+.app-shell__header {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.app-shell__eyebrow {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.app-shell h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  color: #f8fafc;
+}
+
+.app-shell__description {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.deck {
+  display: grid;
+  gap: 1rem;
+}
+
+.deck__status {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+.flashcard {
+  width: 100%;
+  min-height: 20rem;
+  padding: 1.75rem;
+  border: 0;
+  border-radius: 1.5rem;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  color: #f8fafc;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  display: grid;
+  align-content: center;
+  gap: 0.85rem;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.flashcard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.45);
+}
+
+.flashcard:focus-visible,
+.deck__controls button:focus-visible {
+  outline: 3px solid #34d399;
+  outline-offset: 3px;
+}
+
+.flashcard--flipped {
+  background: linear-gradient(145deg, #14532d, #166534);
+}
+
+.flashcard__hint,
+.flashcard__detail {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.flashcard__topic {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #86efac;
+}
+
+.flashcard__text {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.deck__controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.deck__controls button {
+  flex: 1;
+  padding: 0.95rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #0f172a;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    gap: 1.5rem;
+  }
+
+  .flashcard {
+    min-height: 16rem;
+    padding: 1.25rem;
+  }
+
+  .deck__status,
+  .deck__controls {
+    flex-direction: column;
+  }
+}
