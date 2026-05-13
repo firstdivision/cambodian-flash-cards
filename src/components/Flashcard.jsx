@@ -32,7 +32,7 @@ function CardFace({ side, hintText, topic, text, detail }) {
   )
 }
 
-function Flashcard({ card, flipped, onFlip, onKnow }) {
+function Flashcard({ card, flipped, onFlip, onKnow, frontLabel }) {
   return (
     <div className="flashcard-wrapper">
       <button
@@ -43,15 +43,15 @@ function Flashcard({ card, flipped, onFlip, onKnow }) {
         aria-label={
           flipped
             ? `${card.english}: phonetic pronunciation is ${card.phonetic}. Tap to flip back.`
-            : `${card.english}: Khmer script shown. Tap to reveal phonetic pronunciation.`
+            : `${card.english}: ${frontLabel} shown. Tap to reveal phonetic pronunciation.`
         }
       >
         <CardFace
           side="front"
           hintText="Tap to reveal pronunciation"
           topic={card.english}
-          text={card.khmer}
-          detail="Khmer script"
+          text={card.target}
+          detail={frontLabel}
         />
         <CardFace
           side="back"

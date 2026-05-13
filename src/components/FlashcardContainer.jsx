@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Flashcard from './Flashcard'
 
-const COOKIE_NAME = 'cambodian_known_cards'
+const COOKIE_PREFIX = 'known_cards_'
 
-function getKnownCards() {
-  const match = document.cookie.match(new RegExp('(?:^|; )' + COOKIE_NAME + '=([^;]*)'))
+function getKnownCards(languageKey) {
+  const cookieName = `${COOKIE_PREFIX}${languageKey}`
+  const match = document.cookie.match(new RegExp('(?:^|; )' + cookieName + '=([^;]*)'))
   if (!match) return []
   try {
     return JSON.parse(decodeURIComponent(match[1]))
@@ -13,14 +14,16 @@ function getKnownCards() {
   }
 }
 
-function saveKnownCards(ids) {
+function saveKnownCards(languageKey, ids) {
+  const cookieName = `${COOKIE_PREFIX}${languageKey}`
   const value = encodeURIComponent(JSON.stringify(ids))
   const expires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()
-  document.cookie = `${COOKIE_NAME}=${value}; expires=${expires}; path=/; SameSite=Lax`
+  document.cookie = `${cookieName}=${value}; expires=${expires}; path=/; SameSite=Lax`
 }
 
-function clearKnownCards() {
-  document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`
+function clearKnownCards(languageKey) {
+  const cookieName = `${COOKIE_PREFIX}${languageKey}`
+  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`
 }
 
 function getUnknownCards(cards, knownIds) {
@@ -37,21 +40,51 @@ function shuffle(array) {
   return result
 }
 
-function FlashcardContainer({ cards }) {
-  const [knownIds, setKnownIds] = useState(() => new Set(getKnownCards()))
+function FlashcardContainer({
+  cards,
+  languageKey,
+  languageName,
+  shortName,
+  frontLabel,
+  languageOptions,
+  onLanguageChange,
+}) {
+  const [knownIds, setKnownIds] = useState(() => new Set(getKnownCards(languageKey)))
   const [deck, setDeck] = useState(() => {
-    const known = new Set(getKnownCards())
+    const known = new Set(getKnownCards(languageKey))
     return shuffle(getUnknownCards(cards, known))
   })
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
 
+  useEffect(() => {
+    const knownForLanguage = new Set(getKnownCards(languageKey))
+    setKnownIds(knownForLanguage)
+    setDeck(shuffle(getUnknownCards(cards, knownForLanguage)))
+    setCurrentIndex(0)
+    setIsFlipped(false)
+  }, [cards, languageKey])
+
+  const languagePicker = (
+    <label className="app-shell__language-picker">
+      <span>Language</span>
+      <select value={languageKey} onChange={(event) => onLanguageChange(event.target.value)}>
+        {languageOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+
   if (cards.length === 0) {
     return (
       <main className="app-shell">
         <header className="app-shell__header">
-          <p className="app-shell__eyebrow">Cambodian Travel Flashcards</p>
+          <p className="app-shell__eyebrow">{languageName} Travel Flashcards</p>
           <h1>No flashcards available yet.</h1>
+          {languagePicker}
         </header>
       </main>
     )
@@ -75,7 +108,7 @@ function FlashcardContainer({ cards }) {
     const cardId = deck[currentIndex].english
     const newKnownIds = new Set([...knownIds, cardId])
     setKnownIds(newKnownIds)
-    saveKnownCards([...newKnownIds])
+    saveKnownCards(languageKey, [...newKnownIds])
 
     const newDeck = deck.filter((_, i) => i !== currentIndex)
     setDeck(newDeck)
@@ -84,7 +117,7 @@ function FlashcardContainer({ cards }) {
   }
 
   const resetStats = () => {
-    clearKnownCards()
+    clearKnownCards(languageKey)
     setKnownIds(new Set())
     setDeck(shuffle(cards))
     setCurrentIndex(0)
@@ -95,8 +128,9 @@ function FlashcardContainer({ cards }) {
     return (
       <main className="app-shell">
         <header className="app-shell__header">
-          <p className="app-shell__eyebrow">Cambodian Travel Flashcards</p>
+          <p className="app-shell__eyebrow">{languageName} Travel Flashcards</p>
           <h1>You know all {knownIds.size} cards! 🎉</h1>
+          {languagePicker}
         </header>
         <section className="deck">
           <p className="deck__all-known">
@@ -113,12 +147,13 @@ function FlashcardContainer({ cards }) {
   return (
     <main className="app-shell">
       <header className="app-shell__header">
-        <p className="app-shell__eyebrow">Cambodian Travel Flashcards</p>
-        <h1>Learn a few useful Khmer phrases.</h1>
+        <p className="app-shell__eyebrow">{languageName} Travel Flashcards</p>
+        <h1>Learn a few useful {shortName} phrases.</h1>
+        {languagePicker}
         <ol className="app-shell__steps" aria-label="How to use">
           <li>
             <span className="app-shell__step-icon" aria-hidden="true">🃏</span>
-            <span>Read the Khmer script on the card</span>
+            <span>Read the {frontLabel} on the card</span>
           </li>
           <li>
             <span className="app-shell__step-icon" aria-hidden="true">👆</span>
@@ -136,7 +171,7 @@ function FlashcardContainer({ cards }) {
           <span>
             Card {currentIndex + 1} of {deck.length}
           </span>
-          <span>{isFlipped ? 'Pronunciation side' : 'Khmer side'}</span>
+          <span>{isFlipped ? 'Pronunciation side' : `${shortName} side`}</span>
         </div>
 
         <Flashcard
@@ -144,6 +179,7 @@ function FlashcardContainer({ cards }) {
           flipped={isFlipped}
           onFlip={() => setIsFlipped((current) => !current)}
           onKnow={handleKnow}
+          frontLabel={frontLabel}
         />
 
         <div className="deck__controls">
