@@ -28,11 +28,21 @@ function FlashcardContainer({ cards }) {
     <main className="app-shell">
       <header className="app-shell__header">
         <p className="app-shell__eyebrow">Cambodian Travel Flashcards</p>
-        <h1>Practice a few useful Khmer phrases before you land.</h1>
-        <p className="app-shell__description">
-          Flip each card to reveal an easy phonetic pronunciation, then move to
-          the next phrase when you are ready.
-        </p>
+        <h1>Learn a few useful Khmer phrases.</h1>
+        <ol className="app-shell__steps" aria-label="How to use">
+          <li>
+            <span className="app-shell__step-icon" aria-hidden="true">🃏</span>
+            <span>Read the Khmer script on the card</span>
+          </li>
+          <li>
+            <span className="app-shell__step-icon" aria-hidden="true">👆</span>
+            <span>Tap the card to flip it and hear the pronunciation</span>
+          </li>
+          <li>
+            <span className="app-shell__step-icon" aria-hidden="true">➡️</span>
+            <span>Use the buttons below to move to the next phrase</span>
+          </li>
+        </ol>
       </header>
 
       <section className="deck" aria-label="Flashcards">
@@ -40,7 +50,7 @@ function FlashcardContainer({ cards }) {
           <span>
             Card {currentIndex + 1} of {cards.length}
           </span>
-          <span>{isFlipped ? 'Pronunciation side' : 'Phrase side'}</span>
+          <span>{isFlipped ? 'Pronunciation side' : 'Khmer side'}</span>
         </div>
 
         <Flashcard
@@ -51,10 +61,10 @@ function FlashcardContainer({ cards }) {
 
         <div className="deck__controls">
           <button type="button" onClick={() => goToCard(-1)}>
-            Previous
+            ← Previous
           </button>
           <button type="button" onClick={() => goToCard(1)}>
-            Next
+            Next →
           </button>
         </div>
       </section>
