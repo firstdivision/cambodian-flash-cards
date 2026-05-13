@@ -129,6 +129,16 @@
   50% { opacity: 1; transform: rotate(20deg); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .flashcard {
+    transition: none;
+  }
+
+  .flashcard__flip-icon {
+    animation: none;
+  }
+}
+
 .flashcard:focus-visible {
   outline: 3px solid #34d399;
   outline-offset: 3px;

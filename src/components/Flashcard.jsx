@@ -18,6 +18,20 @@ function FlipIcon() {
   )
 }
 
+function CardFace({ side, hintText, topic, text, detail }) {
+  return (
+    <span className={`flashcard__face flashcard__face--${side}`} aria-hidden="true">
+      <span className="flashcard__hint">
+        <FlipIcon />
+        {hintText}
+      </span>
+      <span className="flashcard__topic">{topic}</span>
+      <span className="flashcard__text">{text}</span>
+      <span className="flashcard__detail">{detail}</span>
+    </span>
+  )
+}
+
 function Flashcard({ card, flipped, onFlip }) {
   return (
     <div className="flashcard-wrapper">
@@ -32,25 +46,20 @@ function Flashcard({ card, flipped, onFlip }) {
             : `${card.english}: Khmer script shown. Tap to reveal phonetic pronunciation.`
         }
       >
-        <span className="flashcard__face flashcard__face--front" aria-hidden="true">
-          <span className="flashcard__hint">
-            <FlipIcon />
-            Tap to reveal pronunciation
-          </span>
-          <span className="flashcard__topic">{card.english}</span>
-          <span className="flashcard__text">{card.khmer}</span>
-          <span className="flashcard__detail">Khmer script</span>
-        </span>
-
-        <span className="flashcard__face flashcard__face--back" aria-hidden="true">
-          <span className="flashcard__hint">
-            <FlipIcon />
-            Tap to see Khmer script
-          </span>
-          <span className="flashcard__topic">{card.english}</span>
-          <span className="flashcard__text">{card.phonetic}</span>
-          <span className="flashcard__detail">Phonetic pronunciation</span>
-        </span>
+        <CardFace
+          side="front"
+          hintText="Tap to reveal pronunciation"
+          topic={card.english}
+          text={card.khmer}
+          detail="Khmer script"
+        />
+        <CardFace
+          side="back"
+          hintText="Tap to see Khmer script"
+          topic={card.english}
+          text={card.phonetic}
+          detail="Phonetic pronunciation"
+        />
       </button>
     </div>
   )
