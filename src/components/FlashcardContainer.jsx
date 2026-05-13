@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Flashcard from './Flashcard'
 
 const COOKIE_PREFIX = 'known_cards_'
@@ -56,14 +56,6 @@ function FlashcardContainer({
   })
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
-
-  useEffect(() => {
-    const knownForLanguage = new Set(getKnownCards(languageKey))
-    setKnownIds(knownForLanguage)
-    setDeck(shuffle(getUnknownCards(cards, knownForLanguage)))
-    setCurrentIndex(0)
-    setIsFlipped(false)
-  }, [cards, languageKey])
 
   const languagePicker = (
     <label className="app-shell__language-picker">

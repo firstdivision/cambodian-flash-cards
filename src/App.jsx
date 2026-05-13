@@ -9,6 +9,7 @@ function App() {
 
   return (
     <FlashcardContainer
+      key={selectedLanguage}
       cards={selectedDeck.cards}
       languageKey={selectedLanguage}
       languageName={selectedDeck.languageName}
