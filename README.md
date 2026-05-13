@@ -1,7 +1,7 @@
 # cambodian-flash-cards
 
-Simple React flashcards for practicing useful Khmer travel phrases with
-phonetic pronunciations.
+Simple React flashcards for practicing useful Khmer and Vietnamese travel
+phrases with phonetic pronunciations.
 
 ## Development
 
