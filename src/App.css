@@ -66,6 +66,7 @@
 /* ── 3-D flip card ── */
 .flashcard-wrapper {
   perspective: 1200px;
+  position: relative;
 }
 
 .flashcard {
@@ -211,4 +212,101 @@
     min-height: 16rem;
     padding: 1rem 1.25rem;
   }
+}
+
+/* "I knew that" button – overlaid on the back face */
+.flashcard__knew-btn {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid rgba(134, 239, 172, 0.8);
+  border-radius: 999px;
+  background: rgba(20, 83, 45, 0.9);
+  color: #f0fdf4;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.flashcard__knew-btn:hover {
+  background: rgba(22, 101, 52, 0.98);
+  border-color: #86efac;
+}
+
+.flashcard__knew-btn:focus-visible {
+  outline: 3px solid #34d399;
+  outline-offset: 3px;
+}
+
+/* Footer row: known-card count + reset link */
+.deck__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.deck__known-count {
+  color: #86efac;
+}
+
+.deck__reset-link {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.deck__reset-link:hover {
+  color: #f8fafc;
+}
+
+.deck__reset-link:focus-visible {
+  outline: 3px solid #34d399;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* "All cards known" completion state */
+.deck__all-known {
+  margin: 0;
+  text-align: center;
+  color: #86efac;
+  font-size: 1.1rem;
+}
+
+.deck__reset-btn {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #166534;
+  color: #f0fdf4;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.deck__reset-btn:hover {
+  background: #15803d;
+}
+
+.deck__reset-btn:focus-visible {
+  outline: 3px solid #34d399;
+  outline-offset: 3px;
 }
