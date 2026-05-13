@@ -192,6 +192,16 @@
   outline-offset: 3px;
 }
 
+.deck__controls__shuffle {
+  flex: 0 0 auto;
+  background: #166534 !important;
+  color: #f0fdf4 !important;
+}
+
+.deck__controls__shuffle:hover {
+  background: #15803d !important;
+}
+
 @media (max-width: 640px) {
   .app-shell {
     gap: 1.5rem;

@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import Flashcard from './Flashcard'
 
+function shuffle(array) {
+  const result = [...array]
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[result[i], result[j]] = [result[j], result[i]]
+  }
+  return result
+}
+
 function FlashcardContainer({ cards }) {
+  const [deck, setDeck] = useState(() => shuffle(cards))
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
 
@@ -18,9 +28,15 @@ function FlashcardContainer({ cards }) {
 
   const goToCard = (direction) => {
     setCurrentIndex((current) => {
-      const nextIndex = (current + direction + cards.length) % cards.length
+      const nextIndex = (current + direction + deck.length) % deck.length
       return nextIndex
     })
+    setIsFlipped(false)
+  }
+
+  const shuffleDeck = () => {
+    setDeck(shuffle(cards))
+    setCurrentIndex(0)
     setIsFlipped(false)
   }
 
@@ -48,13 +64,13 @@ function FlashcardContainer({ cards }) {
       <section className="deck" aria-label="Flashcards">
         <div className="deck__status">
           <span>
-            Card {currentIndex + 1} of {cards.length}
+            Card {currentIndex + 1} of {deck.length}
           </span>
           <span>{isFlipped ? 'Pronunciation side' : 'Khmer side'}</span>
         </div>
 
         <Flashcard
-          card={cards[currentIndex]}
+          card={deck[currentIndex]}
           flipped={isFlipped}
           onFlip={() => setIsFlipped((current) => !current)}
         />
@@ -62,6 +78,9 @@ function FlashcardContainer({ cards }) {
         <div className="deck__controls">
           <button type="button" onClick={() => goToCard(-1)}>
             ← Previous
+          </button>
+          <button type="button" className="deck__controls__shuffle" onClick={shuffleDeck}>
+            🔀 Shuffle
           </button>
           <button type="button" onClick={() => goToCard(1)}>
             Next →
