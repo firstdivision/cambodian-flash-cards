@@ -32,7 +32,7 @@ function CardFace({ side, hintText, topic, text, detail }) {
   )
 }
 
-function Flashcard({ card, flipped, onFlip }) {
+function Flashcard({ card, flipped, onFlip, onKnow }) {
   return (
     <div className="flashcard-wrapper">
       <button
@@ -61,6 +61,15 @@ function Flashcard({ card, flipped, onFlip }) {
           detail="Phonetic pronunciation"
         />
       </button>
+      {flipped && (
+        <button
+          type="button"
+          className="flashcard__knew-btn"
+          onClick={onKnow}
+        >
+          ✓ I knew that
+        </button>
+      )}
     </div>
   )
 }
